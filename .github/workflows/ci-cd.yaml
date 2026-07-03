@@ -125,7 +125,11 @@ jobs:
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
             -Dsonar.java.binaries=target/classes
- 
+      - name: Set dev as SonarCloud default branch (run once, then delete this step)
+        run: |
+            curl -u ${{ env.SONAR_TOKEN }}: -X POST \
+            "https://sonarcloud.io/api/project_branches/set_main" \
+            -d "project=${{ env.SONAR_PROJECT_KEY }}&branch=dev"
       - name: SonarCloud Quality Gate Check
         id: quality-gate
         uses: phwt/sonarqube-quality-gate-action@v1
